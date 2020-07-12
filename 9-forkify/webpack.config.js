@@ -24,7 +24,18 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env'],
+                        presets: [
+                            [
+                                // Fix Uncaught ReferenceError: regeneratorRuntime is not defined when using async/await
+                                // https://github.com/babel/babel/issues/9849#issuecomment-656703232
+                                '@babel/preset-env', 
+                                {
+                                    targets: {
+                                        esmodules: true
+                                    }
+                                }
+                            ]
+                        ],
                     },
                 }
             }
