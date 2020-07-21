@@ -31,4 +31,35 @@ export default class Recipe {
         this.servings = 4
     }
 
+    parseIngredients() {
+        const unitLong = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds']
+        const unitShort = ['tbsp', 'tbsp' , 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pounds']
+
+        const newIngredients = this.ingredients.map(el => {
+            // Uniform units
+            let ingredient = el.toLowerCase()
+            unitLong.forEach((unit, i) => {
+                ingredient =  ingredient.replace(unit, unitShort[i])
+            })
+            // Remove parentheses
+            ingredient = ingredient.replace(/ *\([^)]*\) */g, ' ')
+            // Parse ingredients into count, unit and ingredient
+            const arrIng = ingredient.split(' ')
+            const unitIndex = arrIng.findIndex(el2 => unitShort.includes(el2))
+
+            if (unitIndex > -1) {
+                // There is a unit
+            } else if (parseInt(arrIng[0], 10)) {
+                // There is no unit, but 1st elements is number
+            }
+            else if (unitIndex === -1) {
+                // There is no unit, and no number in 1st position
+            }
+            return ingredient
+        })
+
+        this.ingredients = newIngredients
+
+    }
+
 }
