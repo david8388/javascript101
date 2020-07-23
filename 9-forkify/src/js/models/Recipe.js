@@ -34,6 +34,7 @@ export default class Recipe {
     parseIngredients() {
         const unitLong = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds']
         const unitShort = ['tbsp', 'tbsp' , 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pounds']
+        const units = [...unitShort, 'kg', 'g']
 
         const newIngredients = this.ingredients.map(el => {
             // Uniform units
@@ -45,7 +46,7 @@ export default class Recipe {
             ingredient = ingredient.replace(/ *\([^)]*\) */g, ' ')
             // Parse ingredients into count, unit and ingredient
             const arrIng = ingredient.split(' ')
-            const unitIndex = arrIng.findIndex(el2 => unitShort.includes(el2))
+            const unitIndex = arrIng.findIndex(el2 => units.includes(el2))
             let objIng
 
             if (unitIndex > -1) {
@@ -54,10 +55,10 @@ export default class Recipe {
                 // E.g: 4 cups, arrCount is [4]
                 const arrCount = arrIng.slice(0, unitIndex)
                 let count
-                if (arrCount.length === 0) {
-                    count = eval(arrCount[0].replace('-', '+'))
+                if (arrCount.length === 1) {
+                    count = eval(arrIng[0].replace('-', '+'))
                 } else {
-                    count = eval(arrIng.slice(0, unitIndex).join('+s'))
+                    count = eval(arrIng.slice(0, unitIndex).join('+'))
                 }
 
                 objIng = {
@@ -66,7 +67,7 @@ export default class Recipe {
                     ingredient: arrIng.slice(unitIndex + 1).join(' ')
                 }
 
-            } else if (parseInt(arrIng[0], 10)) {
+            } else if (parseInt(arrIng[0], 10)) {          
                 // There is no unit, but 1st elements is number
                 objIng = {
                     count: parseInt(arrIng[0], 10),
@@ -84,7 +85,7 @@ export default class Recipe {
             }
             return objIng
         })
-
+        
         this.ingredients = newIngredients
 
     }
