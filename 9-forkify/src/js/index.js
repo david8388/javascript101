@@ -201,6 +201,3 @@ elements.recipe.addEventListener('click', e => {
         controllerLike()
     }
 }) 
-
-const l = new List()
-window.l = l
